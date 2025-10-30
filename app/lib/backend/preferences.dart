@@ -252,9 +252,11 @@ class SharedPreferencesUtil {
 
   disableApp(String value) {
     final List<App> apps = appsList;
-    final app = apps.firstWhere((element) => element.id == value);
-    app.enabled = false;
-    appsList = apps;
+    App? app = apps.firstWhereOrNull((element) => element.id == value);
+    if (app != null) {
+      app.enabled = false;
+      appsList = apps;
+    }
   }
 
   String get selectedChatAppId => getString('selectedChatAppId2') ?? 'no_selected';
@@ -264,6 +266,10 @@ class SharedPreferencesUtil {
   String get lastUsedSummarizationAppId => getString('lastUsedSummarizationAppId') ?? '';
 
   set lastUsedSummarizationAppId(String value) => saveString('lastUsedSummarizationAppId', value);
+
+  String get preferredSummarizationAppId => getString('preferredSummarizationAppId') ?? '';
+
+  set preferredSummarizationAppId(String value) => saveString('preferredSummarizationAppId', value);
 
   List<ServerConversation> get cachedConversations {
     if (getBool('migratedMemories') ?? false) {
